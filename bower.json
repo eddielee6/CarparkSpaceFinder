@@ -1,0 +1,10 @@
+{
+  "name": "carpark-space-finder",
+  "main": "client/app.js",
+  "private": true,
+  "dependencies": {
+    "angular": "^1.5.5",
+    "bootstrap": "^3.3.6",
+    "underscore": "^1.8.3"
+  }
+}
