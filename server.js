@@ -8,6 +8,8 @@ var cacheExpiry = 60000; // 1min
 
 var app = express();
 
+var port = process.env.PORT || 8080;
+
 app.use("/bower_components", express.static(getAbsolutePath("bower_components")));
 app.use("/client", express.static(getAbsolutePath("client")));
 
@@ -30,8 +32,8 @@ app.get("/api", function(req, res) {
     }
 });
 
-app.listen(3000, function() {
-    console.log("Running on port 3000");
+app.listen(port, function() {
+    console.log("Running on port " + port);
 });
 
 function getAbsolutePath(relativePath) {
