@@ -3,8 +3,10 @@ var path = require("path");
 var http = require("http");
 var cache = require("memory-cache");
 
-var cacheKey = "data";
-var cacheExpiry = 60000; // 1min
+var cacheKeys = {
+    liveData: "live-data",
+    staticData: "static-data"
+};
 
 var app = express();
 
@@ -17,33 +19,69 @@ app.get("/", function(req, res) {
     res.sendFile(getAbsolutePath("index.html"));
 });
 
-app.get("/api", function(req, res) {
-    var cachedData = cache.get(cacheKey);
+app.get("/api/live", function(req, res) {
+    var cacheExpiry = 60000; // 1min
+    fetchCachedData(cacheKeys.liveData, fetchLiveParkingData, cacheExpiry, function(data) {
+        serveJsonResponse(res, data);
+    });
+});
 
-    if (cachedData) {
-        serveJsonResponse(res, cachedData);
-    } else {
-        var address = "http://data.nottinghamtravelwise.org.uk/parking.json";
-        getJson(address, function(response) {
-            var carparks = response.Parking.Carpark;
-            cache.put(cacheKey, carparks, cacheExpiry);
-            serveJsonResponse(res, carparks);
-        });
-    }
+app.get("/api/static", function(req, res) {
+    var cacheExpiry = 600000; // 10min
+    fetchCachedData(cacheKeys.staticData, fetchStaticParkingData, cacheExpiry, function(data) {
+        serveJsonResponse(res, data);
+    });
 });
 
 app.listen(port, function() {
     console.log("Running on port " + port);
 });
 
-function getAbsolutePath(relativePath) {
-    return path.join(__dirname, relativePath);
+function fetchCachedData(cacheKey, fetchFunc, cacheExpiry, callback) {
+    var cachedData = cache.get(cacheKey);
+    
+    if (cachedData) {
+        return callback(cachedData);
+    } else {
+        fetchFunc(function(data) {
+            cache.put(cacheKey, data, cacheExpiry);
+            return callback(data);
+        })
+    }
 }
 
-function getJson(address, callback) {
+function fetchLiveParkingData(callback) {
+    var address = "http://data.nottinghamtravelwise.org.uk/parking.json";
+    getRemoteJson(address, function(data) {
+        return callback(data.parking.carpark);
+    });
+}
+
+function fetchStaticParkingData(callback) {
+    var filePath = "data/carparks.json";
+    getLocalJson(filePath, function(data) {
+        return callback(data);
+    });
+}
+
+function getLocalJson(relativePath, callback) {
+    var fs = require("fs");
+    
+    var absolutePath = getAbsolutePath(relativePath);
+    fs.readFile(absolutePath, "utf8", function(err, data) {
+        if (err) {
+            throw err;
+        }
+        
+        var json = parseJson(data);
+        return callback(json);
+    });
+}
+
+function getRemoteJson(uri, callback) {
     var url = require("url");
 
-    var requestUrl = url.parse(address);
+    var requestUrl = url.parse(uri);
 
     http.get({
         host: requestUrl.host,
@@ -55,27 +93,43 @@ function getJson(address, callback) {
         });
 
         response.on("end", function() {
-            callback(JSON.parse(data));
+            var json = parseJson(data);
+            callback(json);
         });
     });
 }
 
+function getAbsolutePath(relativePath) {
+    return path.join(__dirname, relativePath);
+}
+
 function serveJsonResponse(res, response) {
-    var formattedJson = JSON.stringify(response, formatJson, 4);
+    var formattedJson = JSON.stringify(response, formatKeysAsLowerCamelCase, 4);
     res.write(formattedJson);
     res.end();
 }
 
-// Replaces 'MyProperty' with 'myProperty'
-function formatJson(key, value) {
-    if (value && typeof value === 'object') {
-        var replacement = Array.isArray(value) ? [] : {};
-        for (var k in value) {
-            if (Object.hasOwnProperty.call(value, k)) {
-                replacement[k && k.charAt(0).toLowerCase() + k.substring(1)] = value[k];
-            }
-        }
-        return replacement;
+function parseJson(stringValue) {
+    if (!stringValue) {
+        return { };
     }
-    return value;
+    
+    var parsedValue = JSON.parse(stringValue);
+    var formattedValue = JSON.stringify(parsedValue, formatKeysAsLowerCamelCase);
+    return JSON.parse(formattedValue);
+}
+
+function formatKeysAsLowerCamelCase(key, value) {
+    // Return unchanged
+    if (!value || typeof value !== 'object') {
+        return value;
+    }
+
+    var replacement = Array.isArray(value) ? [] : {};
+    for (var k in value) {
+        if (Object.hasOwnProperty.call(value, k)) {
+            replacement[k && k.charAt(0).toLowerCase() + k.substring(1)] = value[k];
+        }
+    }
+    return replacement;
 }
