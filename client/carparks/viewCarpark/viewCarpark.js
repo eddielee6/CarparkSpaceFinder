@@ -12,7 +12,9 @@ angular.module("viewCarpark", [])
             exports.carpark = response.data;
             
             if (exports.carpark.lat && exports.carpark.long) {
-                _setupMap(exports.carpark.lat, exports.carpark.long);
+                setTimeout(function() {
+                    _setupMap(exports.carpark.lat, exports.carpark.long);
+                }, 100);
             }
         });
     }
