@@ -4,4 +4,25 @@
     margin-top: -15px;
     border-radius: 0;
     border: 0;
+    
+    height: 5px;
+}
+
+.panel .progress .progress-bar-default {
+    background-color: #777777;
+}
+
+.panel .panel-footer {
+    background-color: transparent;
+    border-top: 1px solid #f8f8f8;
+    padding: 5px 10px;
+}
+
+.page-header.no-border {
+    border-bottom: none;
+}
+
+.page-header.no-border .progress {
+    margin-top: 20px;
+    margin-bottom: 0;
 }

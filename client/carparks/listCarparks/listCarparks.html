@@ -9,31 +9,34 @@
 
     <div class="row">
         <div class="col-md-4" ng-repeat="carpark in listCarparksCtrl.carparks">
-            <a ng-href="#/{{carpark.systemCodeNumber}}">
-                <div class="panel" ng-class="{ 'panel-success': (carpark.status === 'good'), 'panel-warning': (carpark.status === 'ok'), 'panel-danger': (carpark.status === 'bad'), 'panel-default': (carpark.status === 'unknown') }">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">{{carpark.shortDescription}}</h3>
+            <div class="panel" ng-class="{ 'panel-success': (carpark.status === 'good'), 'panel-warning': (carpark.status === 'ok'), 'panel-danger': (carpark.status === 'bad'), 'panel-default': (carpark.status === 'unknown') }">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <a ng-href="#/{{carpark.systemCodeNumber}}">{{carpark.shortDescription}}</a>
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <div class="progress">
+                        <div class="progress-bar" ng-style="{ 'width': carpark.occupancyPercentage + '%' }" ng-class="{ 'progress-bar-success': (carpark.status === 'good'), 'progress-bar-warning': (carpark.status === 'ok'), 'progress-bar-danger': (carpark.status === 'bad'), 'progress-bar-default': (carpark.status === 'unknown') }"></div>
                     </div>
-                    <div class="panel-body">
-                        <div class="progress">
-                            <div class="progress-bar" ng-style="{ 'width': carpark.occupancyPercentage + '%' }" ng-class="{ 'progress-bar-success': (carpark.status === 'good'), 'progress-bar-warning': (carpark.status === 'ok'), 'progress-bar-danger': (carpark.status === 'bad'), 'progress-bar-default': (carpark.status === 'unknown') }">
-                                {{carpark.occupancyPercentage}}% full
-                            </div>
-                        </div>
 
-                        Carpark Capacity: {{carpark.capacity}}
+                    Carpark Capacity: {{carpark.capacity}}
 
-                        <div ng-show="carpark.status === 'unknown'">
-                            Free Spaces: Unknown
-                        </div>
+                    <div ng-show="carpark.status === 'unknown'">
+                        Free Spaces: Unknown
+                    </div>
 
 
-                        <div ng-hide="carpark.status === 'unknown'">
-                            Free Spaces: {{carpark.capacity - carpark.occupancy}}
-                        </div>
+                    <div ng-hide="carpark.status === 'unknown'">
+                        Free Spaces: {{carpark.capacity - carpark.occupancy}}
                     </div>
                 </div>
-            </a>
+                <div class="panel-footer text-right">
+                    <small>
+                        <a ng-href="#/{{carpark.systemCodeNumber}}">View Details</a>
+                    </small>
+                </div>
+            </div>
         </div>
     </div>
 </div>

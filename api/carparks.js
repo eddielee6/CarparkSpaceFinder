@@ -24,16 +24,16 @@ router.get("/api/carparks/:id", function(req, res) {
         if (!liveCarpark) {
             return res.sendStatus(404);
         }
-        
+
         Object.assign(carpark, liveCarpark);
-        
-        getCachedStaticParkingData(function(staticCarparks) {            
+
+        getCachedStaticParkingData(function(staticCarparks) {
             var staticCarpark = staticCarparks.find(function(x) {
                 return x.systemCodeNumber == carParkId;
             });
-            
+
             Object.assign(carpark, staticCarpark);
-            
+
             serveJsonResponse(res, carpark);
         });
     });
@@ -41,7 +41,8 @@ router.get("/api/carparks/:id", function(req, res) {
 
 router.get("/api/carparks", function(req, res) {
     getCachedLiveParkingData(function(data) {
-        serveJsonResponse(res, data);
+        var carparks = sortArray(data, "shortDescription");
+        serveJsonResponse(res, carparks);
     });
 });
 
@@ -50,6 +51,23 @@ router.get("/api/static_carparks", function(req, res) {
         serveJsonResponse(res, data);
     });
 });
+
+function setCarparkStatus(carpark) {
+
+    if (carpark.state == "Faulty") {
+        carpark.status = "unknown";
+    } else if (carpark.state == "Full") {
+        carpark.status = "bad";
+    } else if (carpark.occupancyPercentage <= 75) {
+        carpark.status = "good";
+    } else if (carpark.occupancyPercentage > 75 && carpark.occupancyPercentage < 95) {
+        carpark.status = "ok";
+    } else if (carpark.occupancyPercentage >= 95) {
+        carpark.status = "bad";
+    }
+
+    return carpark;
+}
 
 function getCachedStaticParkingData(callback) {
     var cacheExpiry = 600000; // 10min
@@ -77,7 +95,8 @@ function fetchCachedData(cacheKey, fetchFunc, cacheExpiry, callback) {
 function fetchLiveParkingData(callback) {
     var address = "http://data.nottinghamtravelwise.org.uk/parking.json";
     getRemoteJson(address, function(data) {
-        return callback(data.parking.carpark);
+        var carparks = data.parking.carpark.map(setCarparkStatus);
+        return callback(carparks);
     });
 }
 
@@ -86,6 +105,15 @@ function fetchStaticParkingData(callback) {
     getLocalJson(filePath, function(data) {
         return callback(data);
     });
+}
+
+function sortArray(array, property) {
+    array.sort(function(a, b) {
+        if (a[property] < b[property]) return -1;
+        if (a[property] > b[property]) return 1;
+        return 0;
+    });
+    return array;
 }
 
 function getLocalJson(path, callback) {
