@@ -52,11 +52,10 @@ function fetchStaticParkingData(callback) {
     });
 }
 
-function getLocalJson(relativePath, callback) {
+function getLocalJson(path, callback) {
     var fs = require("fs");
     
-    var absolutePath = path.join(__dirname, relativePath);
-    fs.readFile(relativePath, "utf8", function(err, data) {
+    fs.readFile(path, "utf8", function(err, data) {
         if (err) {
             throw err;
         }
