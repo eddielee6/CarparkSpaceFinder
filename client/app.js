@@ -30,6 +30,10 @@ carParkApp.controller("CarparkController", function($http) {
     }
     
     (function init() {
-        _fetchCarparks();
+        exports.isLoading = true;
+        _fetchCarparks()
+        .then(function() {
+           exports.isLoading = false; 
+        });
     })();
 });
