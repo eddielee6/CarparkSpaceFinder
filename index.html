@@ -1,57 +1,33 @@
 <!doctype html>
-<html lang="en" ng-app="CarparkSpaceFinder">
+<html lang="en" ng-app="carparkSpaceFinder">
 <head>
 	<meta charset="utf-8">
 	<title>Carpark Space Finder</title>
 	<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
 	<link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css">
-	<script src="bower_components/angular/angular.js"></script>
-	<script src="bower_components/underscore/underscore.js"></script>
-	<script src="client/app.js"></script>
+	<link rel="stylesheet" href="assets/main.css">
 </head>
 <body>
-	<div class="container" ng-controller="CarparkController as carparkCtrl">
+	<div class="container">
 		<div class="page-header">
 			<h1>Carpark Space Finder</h1>
 		</div>
-		
-		<p class="text-center" ng-show="carparkCtrl.isLoading">
-			<i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>
-		</p>
-		
-		<div ng-hide="carparkCtrl.isLoading">
-			<p class="lead">
-				Tracking {{carparkCtrl.carparks.length}} Nottingham carparks
-			</p>
 
-			<div class="row">
-				<div class="col-md-4" ng-repeat="carpark in carparkCtrl.carparks">
-					<div class="panel" ng-class="{ 'panel-success': (carpark.status === 'good'), 'panel-warning': (carpark.status === 'ok'), 'panel-danger': (carpark.status === 'bad'), 'panel-default': (carpark.status === 'unknown') }">
-						<div class="panel-heading">
-							<h3 class="panel-title">{{carpark.shortDescription}}</h3>
-						</div>
-						<div class="panel-body">
-							Carpark Capacity: {{carpark.capacity}}
-							
-							<div ng-show="carpark.status === 'unknown'">
-								Free Spaces: Unknown
-							</div>
-								
-							
-							<div ng-hide="carpark.status === 'unknown'">
-								Free Spaces: {{carpark.capacity - carpark.occupancy}}
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>				
-		
+		<div ng-view></div>
+
 		<hr>
 
 		<footer>
 			<p>Data provided by <a href="http://www.opendatanottingham.org.uk/dataset.aspx?id=55">Nottingham Open Data</a>.</p>
 		</footer>
 	</div>
+
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBq0lFRaP0I-QMT9AKh9xDxHymKHflapo"></script>
+	<script src="bower_components/underscore/underscore.js"></script>
+	<script src="bower_components/angular/angular.js"></script>
+	<script src="bower_components/angular-route/angular-route.js"></script>
+	<script src="client/carparks/listCarparks/listCarparks.js"></script>
+	<script src="client/carparks/viewCarpark/viewCarpark.js"></script>
+	<script src="client/app.js"></script>
 </body>
 </html>

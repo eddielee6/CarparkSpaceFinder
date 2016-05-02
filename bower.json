@@ -6,6 +6,7 @@
     "angular": "^1.5.5",
     "bootstrap": "^3.3.6",
     "underscore": "^1.8.3",
-    "font-awesome": "fontawesome#^4.6.1"
+    "font-awesome": "fontawesome#^4.6.1",
+    "angular-route": "^1.5.5"
   }
 }

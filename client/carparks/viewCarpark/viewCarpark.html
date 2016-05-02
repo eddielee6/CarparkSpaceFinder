@@ -1,0 +1,20 @@
+<p class="text-center" ng-show="viewCarparkCtrl.isLoading">
+    <i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>
+</p>
+
+<div ng-hide="viewCarparkCtrl.isLoading">
+    <ol class="breadcrumb">
+        <li><a href="#/">Carparks</a></li>
+        <li><a ng-href="#/{{viewCarparkCtrl.carparkId}}">{{viewCarparkCtrl.carpark.shortDescription}}</a></li>
+    </ol>
+
+    <div class="page-header">
+        <h1>{{viewCarparkCtrl.carpark.shortDescription}}</h1>
+    </div>
+
+    <p class="lead">
+        Hello
+    </p>
+    
+    <div style="width: 100%; height: 600px;" id="location-map"></div>
+</div>

@@ -5,6 +5,7 @@ var app = express();
 var port = process.env.PORT || 8080;
 
 app.use("/bower_components", express.static(path.join(__dirname, "bower_components")));
+app.use("/assets", express.static(path.join(__dirname, "assets")));
 app.use("/client", express.static(path.join(__dirname, "client")));
 
 var staticRouter = express.Router();

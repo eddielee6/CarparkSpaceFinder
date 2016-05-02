@@ -11,23 +11,59 @@ var cacheKeys = {
     staticData: "static-data"
 };
 
+router.get("/api/carparks/:id", function(req, res) {
+    var carParkId = req.params.id;
+
+    var carpark = {};
+
+    getCachedLiveParkingData(function(liveCarparks) {
+        var liveCarpark = liveCarparks.find(function(x) {
+            return x.systemCodeNumber == carParkId;
+        });
+
+        if (!liveCarpark) {
+            return res.sendStatus(404);
+        }
+        
+        Object.assign(carpark, liveCarpark);
+        
+        getCachedStaticParkingData(function(staticCarparks) {            
+            var staticCarpark = staticCarparks.find(function(x) {
+                return x.systemCodeNumber == carParkId;
+            });
+            
+            Object.assign(carpark, staticCarpark);
+            
+            serveJsonResponse(res, carpark);
+        });
+    });
+});
+
 router.get("/api/carparks", function(req, res) {
-    var cacheExpiry = 60000; // 1min
-    fetchCachedData(cacheKeys.liveData, fetchLiveParkingData, cacheExpiry, function(data) {
+    getCachedLiveParkingData(function(data) {
         serveJsonResponse(res, data);
     });
 });
 
 router.get("/api/static_carparks", function(req, res) {
-    var cacheExpiry = 600000; // 10min
-    fetchCachedData(cacheKeys.staticData, fetchStaticParkingData, cacheExpiry, function(data) {
+    getCachedStaticParkingData(function(data) {
         serveJsonResponse(res, data);
     });
 });
 
+function getCachedStaticParkingData(callback) {
+    var cacheExpiry = 600000; // 10min
+    fetchCachedData(cacheKeys.staticData, fetchStaticParkingData, cacheExpiry, callback);
+}
+
+function getCachedLiveParkingData(callback) {
+    var cacheExpiry = 60000; // 1min
+    fetchCachedData(cacheKeys.liveData, fetchLiveParkingData, cacheExpiry, callback);
+}
+
 function fetchCachedData(cacheKey, fetchFunc, cacheExpiry, callback) {
     var cachedData = cache.get(cacheKey);
-    
+
     if (cachedData) {
         return callback(cachedData);
     } else {
@@ -54,12 +90,12 @@ function fetchStaticParkingData(callback) {
 
 function getLocalJson(path, callback) {
     var fs = require("fs");
-    
+
     fs.readFile(path, "utf8", function(err, data) {
         if (err) {
             throw err;
         }
-        
+
         var json = parseJson(data);
         return callback(json);
     });
@@ -94,9 +130,9 @@ function serveJsonResponse(res, response) {
 
 function parseJson(stringValue) {
     if (!stringValue) {
-        return { };
+        return {};
     }
-    
+
     var parsedValue = JSON.parse(stringValue);
     var formattedValue = JSON.stringify(parsedValue, formatKeysAsLowerCamelCase);
     return JSON.parse(formattedValue);
