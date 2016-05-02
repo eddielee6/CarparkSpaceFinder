@@ -46,7 +46,7 @@ function fetchLiveParkingData(callback) {
 }
 
 function fetchStaticParkingData(callback) {
-    var filePath = "data/carparks.json";
+    var filePath = "./data/carparks.json";
     getLocalJson(filePath, function(data) {
         return callback(data);
     });
@@ -56,7 +56,7 @@ function getLocalJson(relativePath, callback) {
     var fs = require("fs");
     
     var absolutePath = path.join(__dirname, relativePath);
-    fs.readFile(absolutePath, "utf8", function(err, data) {
+    fs.readFile(relativePath, "utf8", function(err, data) {
         if (err) {
             throw err;
         }
