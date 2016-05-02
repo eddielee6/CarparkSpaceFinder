@@ -23,7 +23,7 @@ carParkApp.controller("CarparkController", function($http) {
     }
     
     function _fetchCarparks() {
-        $http.get("/api/live")
+        return $http.get("/api/carparks")
         .then(function(response) {
             exports.carparks = _.map(response.data, _mapCarpark);
         });

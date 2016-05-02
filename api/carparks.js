@@ -11,14 +11,14 @@ var cacheKeys = {
     staticData: "static-data"
 };
 
-router.get("/api/live", function(req, res) {
+router.get("/api/carparks", function(req, res) {
     var cacheExpiry = 60000; // 1min
     fetchCachedData(cacheKeys.liveData, fetchLiveParkingData, cacheExpiry, function(data) {
         serveJsonResponse(res, data);
     });
 });
 
-router.get("/api/static", function(req, res) {
+router.get("/api/static_carparks", function(req, res) {
     var cacheExpiry = 600000; // 10min
     fetchCachedData(cacheKeys.staticData, fetchStaticParkingData, cacheExpiry, function(data) {
         serveJsonResponse(res, data);
