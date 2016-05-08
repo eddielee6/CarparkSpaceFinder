@@ -1,19 +1,18 @@
 angular.module("viewCarpark", [])
-.controller("ViewCarparkController", function($http, $routeParams) {
-    var exports = this;
+.controller("ViewCarparkController", function($scope, $http, $routeParams) {
     
-    exports.carparkId = $routeParams.carparkId;
+    $scope.carparkId = $routeParams.carparkId;
     
-    exports.carpark = {};
+    $scope.carpark = {};
     
     function _fetchCarpark(carparkId) {
         return $http.get("/api/carparks/" + carparkId)
         .then(function(response) {
-            exports.carpark = response.data;
+            $scope.carpark = response.data;
             
-            if (exports.carpark.lat && exports.carpark.long) {
+            if ($scope.carpark.lat && $scope.carpark.long) {
                 setTimeout(function() {
-                    _setupMap(exports.carpark.lat, exports.carpark.long);
+                    _setupMap($scope.carpark.lat, $scope.carpark.long);
                 }, 100);
             }
         });
@@ -27,16 +26,16 @@ angular.module("viewCarpark", [])
         });
         
         var coordInfoWindow = new google.maps.InfoWindow();
-        coordInfoWindow.setContent(exports.carpark.name);
+        coordInfoWindow.setContent($scope.carpark.name);
         coordInfoWindow.setPosition(location);
         coordInfoWindow.open(map);
     }
     
     (function init() {
-        exports.isLoading = true;
-        _fetchCarpark(exports.carparkId)
+        $scope.isLoading = true;
+        _fetchCarpark($scope.carparkId)
         .then(function() {
-           exports.isLoading = false;
+           $scope.isLoading = false;
         });        
     })();
 });

@@ -1,14 +1,14 @@
-<p class="text-center" ng-show="listCarparksCtrl.isLoading">
+<p class="text-center" ng-show="isLoading">
     <i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>
 </p>
 
-<div ng-hide="listCarparksCtrl.isLoading">
+<div ng-hide="isLoading">
     <p class="lead">
-        Tracking {{listCarparksCtrl.carparks.length}} Nottingham carparks
+        Tracking {{carparks.length}} Nottingham carparks
     </p>
 
     <div class="row">
-        <div class="col-md-4" ng-repeat="carpark in listCarparksCtrl.carparks">
+        <div class="col-md-4" ng-repeat="carpark in carparks">
             <div class="panel" ng-class="{ 'panel-success': (carpark.status === 'good'), 'panel-warning': (carpark.status === 'ok'), 'panel-danger': (carpark.status === 'bad'), 'panel-default': (carpark.status === 'unknown') }">
                 <div class="panel-heading">
                     <h3 class="panel-title">

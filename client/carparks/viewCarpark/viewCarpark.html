@@ -1,82 +1,82 @@
-<p class="text-center" ng-show="viewCarparkCtrl.isLoading">
+<p class="text-center" ng-show="isLoading">
     <i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>
 </p>
 
-<div ng-hide="viewCarparkCtrl.isLoading">
+<div ng-hide="isLoading">
     <ol class="breadcrumb">
         <li><a href="#/">Carparks</a></li>
-        <li><a ng-href="#/{{viewCarparkCtrl.carparkId}}">{{viewCarparkCtrl.carpark.shortDescription}}</a></li>
+        <li><a ng-href="#/{{carparkId}}">{{carpark.shortDescription}}</a></li>
     </ol>
 
     <div class="page-header">
-        <h1>{{viewCarparkCtrl.carpark.name || viewCarparkCtrl.carpark.shortDescription}}</h1>
+        <h1>{{carpark.name || carpark.shortDescription}}</h1>
         
     </div>
     
     <p class="lead">Carpark Details</p>
     
     <div class="progress">
-            <div class="progress-bar" ng-style="{ 'width': viewCarparkCtrl.carpark.occupancyPercentage + '%' }" ng-class="{ 'progress-bar-success': (viewCarparkCtrl.carpark.status === 'good'), 'progress-bar-warning': (viewCarparkCtrl.carpark.status === 'ok'), 'progress-bar-danger': (viewCarparkCtrl.carpark.status === 'bad'), 'progress-bar-default': (viewCarparkCtrl.carpark.status === 'unknown') }">
-                {{viewCarparkCtrl.carpark.occupancyPercentage}}% full
+            <div class="progress-bar" ng-style="{ 'width': carpark.occupancyPercentage + '%' }" ng-class="{ 'progress-bar-success': (carpark.status === 'good'), 'progress-bar-warning': (carpark.status === 'ok'), 'progress-bar-danger': (carpark.status === 'bad'), 'progress-bar-default': (carpark.status === 'unknown') }">
+                {{carpark.occupancyPercentage}}% full
             </div>
         </div>
     
     <div class="row">
         <div class="col-md-6">
             <form class="form-horizontal">
-                <div class="form-group" ng-show="viewCarparkCtrl.carpark.operator">
+                <div class="form-group" ng-show="carpark.operator">
                     <label class="col-sm-2 control-label">Operator</label>
                     <div class="col-sm-10">
-                        <p class="form-control-static">{{viewCarparkCtrl.carpark.operator}}</p>
+                        <p class="form-control-static">{{carpark.operator}}</p>
                     </div>
                 </div>
                 
-                <div class="form-group" ng-show="viewCarparkCtrl.carpark.payment">
+                <div class="form-group" ng-show="carpark.payment">
                     <label class="col-sm-2 control-label">Payment</label>
                     <div class="col-sm-10">
-                        <p class="form-control-static">{{viewCarparkCtrl.carpark.payment}}</p>
+                        <p class="form-control-static">{{carpark.payment}}</p>
                     </div>
                 </div>
                 
-                <div class="form-group" ng-show="viewCarparkCtrl.carpark.opening">
+                <div class="form-group" ng-show="carpark.opening">
                     <label class="col-sm-2 control-label">Opening</label>
                     <div class="col-sm-10">
-                        <p class="form-control-static">{{viewCarparkCtrl.carpark.opening}}</p>
+                        <p class="form-control-static">{{carpark.opening}}</p>
                     </div>
                 </div>
                 
-                <div class="form-group" ng-show="viewCarparkCtrl.carpark.address">
+                <div class="form-group" ng-show="carpark.address">
                     <label class="col-sm-2 control-label">Address</label>
                     <div class="col-sm-10">
-                        <p class="form-control-static">{{viewCarparkCtrl.carpark.address}}</p>
+                        <p class="form-control-static">{{carpark.address}}</p>
                     </div>
                 </div>
                 
-                <div class="form-group" ng-show="viewCarparkCtrl.carpark.capacity">
+                <div class="form-group" ng-show="carpark.capacity">
                     <label class="col-sm-2 control-label">Spaces</label>
                     <div class="col-sm-10">
-                        <p class="form-control-static">{{viewCarparkCtrl.carpark.capacity - viewCarparkCtrl.carpark.occupancy}} / {{viewCarparkCtrl.carpark.capacity}}</p>
+                        <p class="form-control-static">{{carpark.capacity - carpark.occupancy}} / {{carpark.capacity}}</p>
                     </div>
                 </div>
                 
-                <div class="form-group" ng-show="viewCarparkCtrl.carpark.security">
+                <div class="form-group" ng-show="carpark.security">
                     <label class="col-sm-2 control-label">Security</label>
                     <div class="col-sm-10">
-                        <p class="form-control-static">{{viewCarparkCtrl.carpark.security}}</p>
+                        <p class="form-control-static">{{carpark.security}}</p>
                     </div>
                 </div>
                 
-                <div class="form-group" ng-show="viewCarparkCtrl.carpark.hasCCTV">
+                <div class="form-group" ng-show="carpark.hasCCTV">
                     <label class="col-sm-2 control-label">CCTV</label>
                     <div class="col-sm-10">
-                        <p class="form-control-static">{{viewCarparkCtrl.carpark.hasCCTV}}</p>
+                        <p class="form-control-static">{{carpark.hasCCTV}}</p>
                     </div>
                 </div>
                 
-                <div class="form-group" ng-show="viewCarparkCtrl.carpark.lastUpdated">
+                <div class="form-group" ng-show="carpark.lastUpdated">
                     <label class="col-sm-2 control-label">Updated</label>
                     <div class="col-sm-10">
-                        <p class="form-control-static">{{viewCarparkCtrl.carpark.lastUpdated}}</p>
+                        <p class="form-control-static">{{carpark.lastUpdated}}</p>
                     </div>
                 </div>
             </form>

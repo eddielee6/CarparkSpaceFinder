@@ -1,21 +1,19 @@
 angular.module("listCarparks", [])
-.controller("ListCarparksController", function($http) {
-    var exports = this;
-    
-    this.carparks = [];
+.controller("ListCarparksController", function($scope, $http) {    
+    $scope.carparks = [];
     
     function _fetchCarparks() {
         return $http.get("/api/carparks")
         .then(function(response) {
-            exports.carparks = response.data, "shortDescription";
+            $scope.carparks = response.data, "shortDescription";
         });
     }
     
     (function init() {
-        exports.isLoading = true;
+        $scope.isLoading = true;
         _fetchCarparks()
         .then(function() {
-           exports.isLoading = false; 
+           $scope.isLoading = false; 
         });
     })();
 });

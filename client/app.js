@@ -3,12 +3,10 @@ angular.module("carparkSpaceFinder", ["ngRoute", "listCarparks", "viewCarpark"])
     $routeProvider
     .when("/", {
         templateUrl: "client/carparks/listCarparks/listCarparks.html",
-        controller: "ListCarparksController",
-        controllerAs: "listCarparksCtrl"
+        controller: "ListCarparksController"
     })
     .when("/:carparkId", {
         templateUrl: "client/carparks/viewCarpark/viewCarpark.html",
-        controller: "ViewCarparkController",
-        controllerAs: "viewCarparkCtrl"
+        controller: "ViewCarparkController"
     });
 });
