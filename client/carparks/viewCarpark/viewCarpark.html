@@ -16,10 +16,10 @@
     <p class="lead">Carpark Details</p>
     
     <div class="progress">
-            <div class="progress-bar" ng-style="{ 'width': carpark.occupancyPercentage + '%' }" ng-class="{ 'progress-bar-success': (carpark.status === 'good'), 'progress-bar-warning': (carpark.status === 'ok'), 'progress-bar-danger': (carpark.status === 'bad'), 'progress-bar-default': (carpark.status === 'unknown') }">
-                {{carpark.occupancyPercentage}}% full
-            </div>
+        <div class="progress-bar" ng-style="{ 'width': carpark.occupancyPercentage + '%' }" ng-class="{ 'progress-bar-success': (carpark.status === 'good'), 'progress-bar-warning': (carpark.status === 'ok'), 'progress-bar-danger': (carpark.status === 'bad'), 'progress-bar-default': (carpark.status === 'unknown') }">
+            {{carpark.occupancyPercentage}}% full
         </div>
+    </div>
     
     <div class="row">
         <div class="col-md-6">

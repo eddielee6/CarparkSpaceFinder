@@ -1,5 +1,4 @@
-angular.module("listCarparks", [])
-.controller("ListCarparksController", function($scope, $http) {    
+module.exports = function($scope, $http) {    
     $scope.carparks = [];
     
     function _fetchCarparks() {
@@ -16,4 +15,4 @@ angular.module("listCarparks", [])
            $scope.isLoading = false; 
         });
     })();
-});
+};
